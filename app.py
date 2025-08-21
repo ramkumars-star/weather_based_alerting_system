@@ -3,14 +3,14 @@ import requests
 from twilio.rest import Client
 import os
 
-# Set your API keys below or configure them as environment variables
-API_KEY = os.getenv('b053a728674d5cb56ec19eab5d610afc') or 'b053a728674d5cb56ec19eab5d610afc'
-TWILIO_ACCOUNT_SID = os.getenv('ACf9ce30b42bad63db68939968aef37f20') or 'ACf9ce30b42bad63db68939968aef37f20'
-TWILIO_AUTH_TOKEN = os.getenv('a5978a026ce3c021cb4a9d6af69f34c9') or 'a5978a026ce3c021cb4a9d6af69f34c9'
-TWILIO_PHONE_NUMBER = os.getenv('+12764214139') or '+12764214139'  # Your Twilio number
+TWILIO_ACCOUNT_SID = os.getenv("ACf9ce30b42bad63db68939968aef37f20") or "ACf9ce30b42bad63db68939968aef37f20"
+TWILIO_AUTH_TOKEN = os.getenv("91a3d343beff55e2905632ee778668f9") or "91a3d343beff55e2905632ee778668f9"
+TWILIO_PHONE_NUMBER = os.getenv("+12764214139") or "+12764214139"
+OPENWEATHER_API_KEY = os.getenv("b053a728674d5cb56ec19eab5d610afc") or "b053a728674d5cb56ec19eab5d610afc"
+
 
 def get_weather(city):
-    url = f"http://api.openweathermap.org/data/2.5/weather?q={city.strip()}&appid={API_KEY}&units=metric"
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={city.strip()}&appid={OPENWEATHER_API_KEY}&units=metric"
     response = requests.get(url)
     if response.status_code == 200:
         return response.json()
@@ -76,16 +76,13 @@ def translate_alerts(alerts, lang):
     return translated
 
 def send_sms_alert(to_phone, message):
-    client = Client('ACf9ce30b42bad63db68939968aef37f20', 'a5978a026ce3c021cb4a9d6af69f34c9')
-    try:
-        msg = client.messages.create(
-            body=message,
-            from_=+12764214139,
-            to=to_phone
-        )
-        return msg.sid
-    except Exception as e:
-        return str(e)
+    client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+message = client.messages.create(
+    body="Test SMS from my weather alert app",
+    from_=TWILIO_PHONE_NUMBER,
+    to="+YourPhoneNumber"
+)
+print(f"Message SID: {message.sid}")
 
 st.title("Weather-Based Alerting System for Multiple Cities")
 
@@ -110,10 +107,10 @@ if st.button("Get Weather Alerts"):
         if phone_number:
             sms_message = "\n\n".join(all_alerts_sms)
             result = send_sms_alert(phone_number, sms_message)
-            if result and not result.startswith("Error"):
-                st.success(f"SMS sent successfully! Message SID: {result}")
-            else:
+            if result.startswith("ERROR"):
                 st.error(f"Failed to send SMS: {result}")
+            else:
+                st.success(f"SMS sent successfully! Message SID: {result}")
         else:
             st.info("Enter a phone number to receive SMS alerts.")
     else:
