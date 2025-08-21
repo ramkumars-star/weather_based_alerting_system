@@ -76,7 +76,7 @@ def translate_alerts(alerts, lang):
     return translated
 
 def send_sms_alert(to_phone, message):
-    client = Client(ACf9ce30b42bad63db68939968aef37f20, a5978a026ce3c021cb4a9d6af69f34c9)
+    client = Client('ACf9ce30b42bad63db68939968aef37f20', 'a5978a026ce3c021cb4a9d6af69f34c9')
     try:
         msg = client.messages.create(
             body=message,
@@ -118,4 +118,5 @@ if st.button("Get Weather Alerts"):
             st.info("Enter a phone number to receive SMS alerts.")
     else:
         st.error("Please enter at least one city name.")
+
 
