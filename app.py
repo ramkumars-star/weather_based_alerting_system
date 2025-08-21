@@ -27,7 +27,7 @@ def analyze_weather(weather_data):
     if temp < 5:
         alerts.append("Frost alert! Temperature below 5°C.")
 
-    if not alerts:
+    if not alerts: 
         alerts.append("Weather conditions are normal.")
     return alerts
 
