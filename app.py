@@ -76,13 +76,16 @@ def translate_alerts(alerts, lang):
     return translated
 
 def send_sms_alert(to_phone, message):
-    client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-message = client.messages.create(
-    body="Test SMS from my weather alert app",
-    from_=+12764214139,
-    to="+YourPhoneNumber"
-)
-print(f"Message SID: {message.sid}")
+    client = Client("ACf9ce30b42bad63db68939968aef37f20", "91a3d343beff55e2905632ee778668f9")
+    try:
+        msg = client.messages.create(
+            body=message,
+            from_=+12764214139,
+            to=to_phone
+        )
+        return msg.sid
+    except Exception as e:
+        return f"ERROR: {e}"
 
 st.title("Weather-Based Alerting System for Multiple Cities")
 
@@ -115,6 +118,7 @@ if st.button("Get Weather Alerts"):
             st.info("Enter a phone number to receive SMS alerts.")
     else:
         st.error("Please enter at least one city name.")
+
 
 
 
