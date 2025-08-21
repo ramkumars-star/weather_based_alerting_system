@@ -79,7 +79,7 @@ def send_sms_alert(to_phone, message):
     client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 message = client.messages.create(
     body="Test SMS from my weather alert app",
-    from_=TWILIO_PHONE_NUMBER,
+    from_=+12764214139,
     to="+YourPhoneNumber"
 )
 print(f"Message SID: {message.sid}")
@@ -115,5 +115,6 @@ if st.button("Get Weather Alerts"):
             st.info("Enter a phone number to receive SMS alerts.")
     else:
         st.error("Please enter at least one city name.")
+
 
 
